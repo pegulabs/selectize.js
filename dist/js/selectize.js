@@ -1,5 +1,5 @@
 /**
- * selectize.js (v0.12.7)
+ * selectize.js (v0.12.6)
  * Copyright (c) 2013–2015 Brian Reavis & contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -375,18 +375,20 @@
 			return 0;
 		}
 	
-		var testInput = $('<span />').css({
-			position: 'absolute',
-			top: -99999,
-			left: -99999,
-			width: 'auto',
-			padding: 0,
-			whiteSpace: 'pre'
-		}).appendTo('body');
+		if (!Selectize.$testInput) {
+			Selectize.$testInput = $('<span />').css({
+				position: 'absolute',
+				top: -99999,
+				left: -99999,
+				width: 'auto',
+				padding: 0,
+				whiteSpace: 'pre'
+			}).appendTo('body');
+		}
 	
-		testInput.text(str);
+		Selectize.$testInput.text(str);
 	
-		transferStyles($parent, testInput, [
+		transferStyles($parent, Selectize.$testInput, [
 			'letterSpacing',
 			'fontSize',
 			'fontFamily',
@@ -394,10 +396,7 @@
 			'textTransform'
 		]);
 	
-		var result = testInput.width();
-		testInput.remove();
-	
-		return result;
+		return Selectize.$testInput.width();
 	};
 	
 	/**
@@ -2580,6 +2579,11 @@
 	
 			self.$control_input.removeData('grow');
 			self.$input.removeData('selectize');
+	
+			if (--Selectize.count == 0 && Selectize.$testInput) {
+				Selectize.$testInput.remove();
+				Selectize.$testInput = undefined;
+			}
 	
 			$(window).off(eventNS);
 			$(document).off(eventNS);
