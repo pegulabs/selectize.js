@@ -375,20 +375,18 @@
 			return 0;
 		}
 	
-		if (!Selectize.$testInput) {
-			Selectize.$testInput = $('<span />').css({
-				position: 'absolute',
-				top: -99999,
-				left: -99999,
-				width: 'auto',
-				padding: 0,
-				whiteSpace: 'pre'
-			}).appendTo('body');
-		}
+		var testInput = $('<span />').css({
+			position: 'absolute',
+			top: -99999,
+			left: -99999,
+			width: 'auto',
+			padding: 0,
+			whiteSpace: 'pre'
+		}).appendTo('body');
 	
-		Selectize.$testInput.text(str);
+		testInput.text(str);
 	
-		transferStyles($parent, Selectize.$testInput, [
+		transferStyles($parent, testInput, [
 			'letterSpacing',
 			'fontSize',
 			'fontFamily',
@@ -396,7 +394,10 @@
 			'textTransform'
 		]);
 	
-		return Selectize.$testInput.width();
+		var result = testInput.width();
+		testInput.remove();
+	
+		return result;
 	};
 	
 	/**
@@ -2579,11 +2580,6 @@
 	
 			self.$control_input.removeData('grow');
 			self.$input.removeData('selectize');
-	
-			if (--Selectize.count == 0 && Selectize.$testInput) {
-				Selectize.$testInput.remove();
-				Selectize.$testInput = undefined;
-			}
 	
 			$(window).off(eventNS);
 			$(document).off(eventNS);
