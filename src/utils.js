@@ -235,20 +235,18 @@ var measureString = function(str, $parent) {
 		return 0;
 	}
 
-	if (!Selectize.$testInput) {
-		Selectize.$testInput = $('<span />').css({
-			position: 'absolute',
-			top: -99999,
-			left: -99999,
-			width: 'auto',
-			padding: 0,
-			whiteSpace: 'pre'
-		}).appendTo('body');
-	}
+	var testInput = $('<span />').css({
+		position: 'absolute',
+		top: -99999,
+		left: -99999,
+		width: 'auto',
+		padding: 0,
+		whiteSpace: 'pre'
+	}).appendTo('body');
 
-	Selectize.$testInput.text(str);
+	testInput.text(str);
 
-	transferStyles($parent, Selectize.$testInput, [
+	transferStyles($parent, testInput, [
 		'letterSpacing',
 		'fontSize',
 		'fontFamily',
@@ -256,7 +254,10 @@ var measureString = function(str, $parent) {
 		'textTransform'
 	]);
 
-	return Selectize.$testInput.width();
+	var result = testInput.width();
+	testInput.remove();
+
+	return result;
 };
 
 /**
